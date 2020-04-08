@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2020, RudyLo <luhuadong@163.com>
  *
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: LGPL-2.1
  *
  * Change Logs:
  * Date           Author       Notes
- * 2020-02-07     luhuadong    the first version
+ * 2020-04-08     luhuadong    the first version
  */
 
 #ifndef __AT_BC28_H__
@@ -28,13 +28,13 @@ typedef enum {
 
 at_stat_t at_stat;
 
-void user_btn_init(void);
-
 /* NB-IoT */
 
 int at_client_dev_init(void);
 int at_client_attach(void);
 int at_client_deattach(void);
+
+/* MQTT */
 
 int bc28_mqtt_auth(void);
 int bc28_mqtt_open(void);

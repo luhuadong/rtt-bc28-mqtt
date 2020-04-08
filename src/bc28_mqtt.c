@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2020, RudyLo <luhuadong@163.com>
  *
- * SPDX-License-Identifier: Apache-2.0
+ * SPDX-License-Identifier: LGPL-2.1
  *
  * Change Logs:
  * Date           Author       Notes
- * 2020-02-07     luhuadong    the first version
+ * 2020-04-08     luhuadong    the first version
  */
 
 #include <stdlib.h>
@@ -16,7 +16,7 @@
 #include <board.h>
 #include <at.h>
 
-#define LOG_TAG                   "at.bc28"
+#define LOG_TAG                   "pkg.at.bc28"
 #define LOG_LVL                   LOG_LVL_DBG
 #include <at_log.h>
 
@@ -352,7 +352,6 @@ static void bc28_reset(void)
     rt_thread_mdelay(300);
 
     rt_pin_write(BC28_RESET_N_PIN, PIN_LOW);
-    //rt_thread_mdelay(300);
 }
 
 int at_client_port_init(void);
