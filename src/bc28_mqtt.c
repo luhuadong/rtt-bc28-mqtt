@@ -330,7 +330,7 @@ int at_client_deattach(void)
  *        -1 : initialize failed
  *        -5 : no memory
  */
-int at_client_dev_init(void)
+static int at_client_dev_init(void)
 {
     rt_device_t serial = rt_device_find(AT_CLIENT_DEV_NAME);
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;

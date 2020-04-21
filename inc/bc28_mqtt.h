@@ -29,13 +29,10 @@ typedef enum {
 at_stat_t at_stat;
 
 /* NB-IoT */
-
-int at_client_dev_init(void);
 int at_client_attach(void);
 int at_client_deattach(void);
 
 /* MQTT */
-
 int bc28_mqtt_auth(void);
 int bc28_mqtt_open(void);
 int bc28_mqtt_close(void);
@@ -45,6 +42,7 @@ int bc28_mqtt_subscribe(const char *topic);
 int bc28_mqtt_unsubscribe(const char *topic);
 int bc28_mqtt_publish(const char *topic, const char *msg);
 
+/* Network */
 int bc28_init(void);
 int build_mqtt_network(void);
 int rebuild_mqtt_network(void);
