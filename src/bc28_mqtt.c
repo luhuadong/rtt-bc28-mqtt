@@ -22,15 +22,15 @@
 
 #include "at_bc28.h"
 
-#define BC28_ADC0_PIN             GET_PIN(C, 0)
-#define BC28_RESET_N_PIN          GET_PIN(A, 5)
+#define BC28_ADC0_PIN             PKG_USING_BC28_ADC0_PIN
+#define BC28_RESET_N_PIN          PKG_USING_BC28_RESET_PIN
 
-#define AT_CLIENT_DEV_NAME        "uart3"
-#define AT_DEFAULT_TIMEOUT        5000
+#define AT_CLIENT_DEV_NAME        PKG_USING_BC28_AT_CLIENT_DEV_NAME
+#define AT_CLIENT_BAUD_RATE       PKG_USING_BC28_MQTT_BAUD_RATE
 
-#define PRODUCT_KEY               "a1p8Pngb3oY"
-#define DEVICE_NAME               "BC28"
-#define DEVICE_SECRET             "miYe6iSBGKbYq71nhkd0cddVT2PSlPGs"
+#define PRODUCT_KEY               PKG_USING_BC28_MQTT_PRODUCT_KEY
+#define DEVICE_NAME               PKG_USING_BC28_MQTT_DEVICE_NAME
+#define DEVICE_SECRET             PKG_USING_BC28_MQTT_DEVICE_SECRET
 
 #define AT_OK                     "OK"
 #define AT_ERROR                  "ERROR"
@@ -81,6 +81,7 @@
 
 //#define AT_QMTRECV_DATA           "+QMTRECV: %d,%d,\"%s\",\"%s\""
 #define AT_CLIENT_RECV_BUFF_LEN   256
+#define AT_DEFAULT_TIMEOUT        5000
 
 
 /**
@@ -332,7 +333,7 @@ int at_client_dev_init(void)
     rt_device_t serial = rt_device_find(AT_CLIENT_DEV_NAME);
     struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
 
-    config.baud_rate = BAUD_RATE_9600;
+    config.baud_rate = AT_CLIENT_BAUD_RATE;
     config.data_bits = DATA_BITS_8;
     config.stop_bits = STOP_BITS_1;
     config.bufsz     = AT_CLIENT_RECV_BUFF_LEN;
@@ -343,6 +344,7 @@ int at_client_dev_init(void)
 
     return at_client_init(AT_CLIENT_DEV_NAME, AT_CLIENT_RECV_BUFF_LEN);
 }
+INIT_DEVICE_EXPORT(at_client_dev_init);
 
 static void bc28_reset(void)
 {
@@ -359,7 +361,7 @@ int at_client_port_init(void);
 int bc28_init(void)
 {
     bc28_reset();
-    at_client_dev_init();
+    //at_client_dev_init();
     at_client_port_init();
     
     return at_client_attach();
