@@ -32,6 +32,8 @@
 #define DEVICE_NAME               PKG_USING_BC28_MQTT_DEVICE_NAME
 #define DEVICE_SECRET             PKG_USING_BC28_MQTT_DEVICE_SECRET
 
+#define KEEP_ALIVE_TIME           PKG_USING_BC28_MQTT_KEEP_ALIVE
+
 #define AT_OK                     "OK"
 #define AT_ERROR                  "ERROR"
 
@@ -251,7 +253,7 @@ int at_client_attach(void)
 
     while(RT_EOK != check_send_cmd(AT_TEST, AT_OK, 0, AT_DEFAULT_TIMEOUT))
     {
-        rt_thread_delay(1000);
+        rt_thread_mdelay(1000);
     }
 
     /* 查询IMEI号 */
@@ -263,8 +265,8 @@ int at_client_attach(void)
     if (result != RT_EOK) return result;
 
     /* 打开模块的调试灯 */
-    result = check_send_cmd(AT_LED_ON, AT_OK, 0, AT_DEFAULT_TIMEOUT);
-    if (result != RT_EOK) return result;
+    //result = check_send_cmd(AT_LED_ON, AT_OK, 0, AT_DEFAULT_TIMEOUT);
+    //if (result != RT_EOK) return result;
 
     /* 将模块设置为全功能模式(开启射频功能) */
     result = check_send_cmd(AT_FUN_ON, AT_OK, 0, AT_DEFAULT_TIMEOUT);
@@ -371,7 +373,7 @@ int build_mqtt_network(void)
 {
     int result = 0;
 
-    bc28_mqtt_set_alive(300);
+    bc28_mqtt_set_alive(KEEP_ALIVE_TIME);
 
     if((result = bc28_mqtt_auth()) < 0) {
         return result;
@@ -401,7 +403,7 @@ int rebuild_mqtt_network(void)
     int result = 0;
 
     bc28_mqtt_close();
-    bc28_mqtt_set_alive(300);
+    bc28_mqtt_set_alive(KEEP_ALIVE_TIME);
 
     if((result = bc28_mqtt_auth()) < 0) {
         return result;
