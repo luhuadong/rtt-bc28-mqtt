@@ -45,3 +45,7 @@ static void bc28_mqtt_sample(void *parameter)
 
     bc28_mqtt_close();
 }
+
+#ifdef FINSH_USING_MSH
+MSH_CMD_EXPORT(bc28_mqtt_sample, BC28 MQTT sample);
+#endif
