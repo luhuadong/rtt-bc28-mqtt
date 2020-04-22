@@ -20,7 +20,7 @@
 #define LOG_LVL                   LOG_LVL_DBG
 #include <at_log.h>
 
-#include "at_bc28.h"
+#include "bc28_mqtt.h"
 
 #define BC28_ADC0_PIN             PKG_USING_BC28_ADC0_PIN
 #define BC28_RESET_N_PIN          PKG_USING_BC28_RESET_PIN
