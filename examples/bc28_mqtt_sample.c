@@ -11,8 +11,6 @@
 #include <rtthread.h>
 #include <bc28_mqtt.h>
 
-#define MQTT_TOPIC_TEST     "xxx"
-
 static void bc28_mqtt_sample(void *parameter)
 {
     if(RT_EOK != bc28_init())
