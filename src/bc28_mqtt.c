@@ -119,7 +119,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
 
 #if 0
     /* Print response line buffer */
-    char *line_buffer = RT_NULL;
+    const char *line_buffer = RT_NULL;
 
     for(rt_size_t line_num = 1; line_num <= resp->line_counts; line_num++)
     {
@@ -203,8 +203,14 @@ int bc28_mqtt_publish(const char *topic, const char *msg)
     char cmd[AT_CMD_MAX_LEN] = {0};
     rt_sprintf(cmd, AT_MQTT_PUB, topic);
 
+    /* set AT client end sign to deal with '>' sign.*/
+    //at_obj_set_end_sign(device->client, '>');
+
     check_send_cmd(cmd, ">", 3, AT_DEFAULT_TIMEOUT);
     LOG_D("go...");
+
+    /* reset the end sign for data conflict */
+    //at_obj_set_end_sign(device->client, 0);
 
     return check_send_cmd(msg, AT_MQTT_PUB_SUCC, 4, AT_DEFAULT_TIMEOUT);
 }
