@@ -85,6 +85,28 @@
 #define AT_CLIENT_RECV_BUFF_LEN   256
 #define AT_DEFAULT_TIMEOUT        5000
 
+/**
+ * This function will show response information.
+ *
+ * @param resp  the response
+ *
+ * @return void
+ */
+static void show_resp_info(at_response_t resp)
+{
+    RT_ASSERT(resp);
+    
+    /* Print response line buffer */
+    const char *line_buffer = RT_NULL;
+
+    for(rt_size_t line_num = 1; line_num <= resp->line_counts; line_num++)
+    {
+        if((line_buffer = at_resp_get_line(resp, line_num)) != RT_NULL)
+            LOG_I("line %d buffer : %s", line_num, line_buffer);
+        else
+            LOG_I("Parse line buffer error!");
+    }
+}
 
 /**
  * This function will send command and check the result.
@@ -117,18 +139,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
         return result;
     }
 
-#if 0
-    /* Print response line buffer */
-    const char *line_buffer = RT_NULL;
-
-    for(rt_size_t line_num = 1; line_num <= resp->line_counts; line_num++)
-    {
-        if((line_buffer = at_resp_get_line(resp, line_num)) != RT_NULL)
-            LOG_D("line %d buffer : %s", line_num, line_buffer);
-        else
-            LOG_D("Parse line buffer error!");
-    }
-#endif
+    show_resp_info(resp);
 
     char resp_arg[AT_CMD_MAX_LEN] = { 0 };
     if (at_resp_parse_line_args_by_kw(resp, resp_expr, "%s", resp_arg) <= 0)
