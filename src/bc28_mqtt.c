@@ -116,13 +116,17 @@ static void show_resp_info(at_response_t resp)
  * @param lines     response lines
  * @param timeout   waiting time
  *
- * @return match successful return RT_EOK, otherwise return error code
+ * @return  RT_EOK       send success
+ *         -RT_ERROR     send failed
+ *         -RT_ETIMEOUT  response timeout
+ *         -RT_ENOMEM    alloc memory failed
  */
 static int check_send_cmd(const char* cmd, const char* resp_expr, 
                           const rt_size_t lines, const rt_int32_t timeout)
 {
     at_response_t resp = RT_NULL;
     int result = 0;
+    char resp_arg[AT_CMD_MAX_LEN] = { 0 };
 
     resp = at_create_resp(AT_CLIENT_RECV_BUFF_LEN, lines, rt_tick_from_millisecond(timeout));
     if (resp == RT_NULL)
@@ -132,26 +136,37 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
     }
 
     result = at_exec_cmd(resp, cmd);
-    if (result != RT_EOK)
+    if (result < 0)
     {
-        LOG_E("AT client send commands failed or return response error!");
-        at_delete_resp(resp);
-        return result;
+        LOG_E("AT client send commands failed or wait response timeout!");
+        goto __exit;
     }
 
-    show_resp_info(resp);
+    //show_resp_info(resp);
 
-    char resp_arg[AT_CMD_MAX_LEN] = { 0 };
-    if (at_resp_parse_line_args_by_kw(resp, resp_expr, "%s", resp_arg) <= 0)
+    if (resp_expr) 
+    {
+        if (at_resp_parse_line_args_by_kw(resp, resp_expr, "%s", resp_arg) <= 0)
+        {
+            LOG_E("# >_< Failed");
+            result = -RT_ERROR;
+            goto __exit;
+        }
+        else
+        {
+            LOG_D("# ^_^ successed");
+        }
+    }
+    
+    result = RT_EOK;
+
+__exit:
+    if (resp)
     {
         at_delete_resp(resp);
-        LOG_E("# >_< Failed");
-        return -RT_ERROR;
     }
 
-    LOG_D("# ^_^ successed");
-    at_delete_resp(resp);
-    return RT_EOK;
+    return result;
 }
 
 static int bc28_mqtt_set_alive(rt_uint32_t keepalive_time)
@@ -215,40 +230,17 @@ int bc28_mqtt_publish(const char *topic, const char *msg)
     rt_sprintf(cmd, AT_MQTT_PUB, topic);
 
     /* set AT client end sign to deal with '>' sign.*/
-    //at_obj_set_end_sign(device->client, '>');
+    at_set_end_sign('>');
 
-    check_send_cmd(cmd, ">", 3, AT_DEFAULT_TIMEOUT);
-    LOG_D("go...");
+    //check_send_cmd(cmd, ">", 3, AT_DEFAULT_TIMEOUT);
+    check_send_cmd(cmd, RT_NULL, 2, AT_DEFAULT_TIMEOUT);
+    LOG_D("publish...");
 
     /* reset the end sign for data conflict */
-    //at_obj_set_end_sign(device->client, 0);
+    at_set_end_sign(0);
 
     return check_send_cmd(msg, AT_MQTT_PUB_SUCC, 4, AT_DEFAULT_TIMEOUT);
 }
-#if 0
-/* For testing */
-static int bc28_mqtt_upload(int argc, char **argv)
-{
-    if(argc != 6) {
-        LOG_E("Usage: bc28_mqtt_upload <temp> <humi> <dust> <tvoc> <eco2>");
-        return -RT_ERROR;
-    }
-
-    int result = 0;
-    char json_pack[512] = {0};
-
-    rt_sprintf(json_pack, JSON_DATA_PACK_TEST, argv[1], argv[2], argv[3], argv[4], argv[5]);
-
-    result = bc28_mqtt_publish(MQTT_TOPIC_UPLOAD, json_pack);
-
-    if(result == RT_EOK)
-        LOG_D("Upload OK");
-    else
-        LOG_D("Upload Error");
-
-    return result;
-}
-#endif
 
 int at_client_attach(void)
 {
@@ -403,15 +395,7 @@ int build_mqtt_network(void)
     if((result = bc28_mqtt_connect()) < 0) {
         return result;
     }
-/*
-    if((result = bc28_mqtt_subscribe(MQTT_TOPIC_HELLO)) < 0) {
-        return result;
-    }
 
-    if((result = bc28_mqtt_auth()) < 0) {
-        return result;
-    }
-*/
     return RT_EOK;
 }
 
@@ -517,7 +501,6 @@ MSH_CMD_EXPORT(bc28_mqtt_disconnect,  AT client MQTT disconnect);
 MSH_CMD_EXPORT(bc28_mqtt_subscribe,   AT client MQTT subscribe);
 MSH_CMD_EXPORT(bc28_mqtt_unsubscribe, AT client MQTT unsubscribe);
 MSH_CMD_EXPORT(bc28_mqtt_publish,     AT client MQTT publish);
-//MSH_CMD_EXPORT(bc28_mqtt_upload,      AT client MQTT upload);
 
 MSH_CMD_EXPORT(at_client_attach, AT client attach to access network);
 MSH_CMD_EXPORT_ALIAS(at_client_dev_init, at_client_init, initialize AT client);
