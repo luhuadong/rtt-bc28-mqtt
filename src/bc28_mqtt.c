@@ -24,6 +24,7 @@
 
 #define BC28_ADC0_PIN             PKG_USING_BC28_ADC0_PIN
 #define BC28_RESET_N_PIN          PKG_USING_BC28_RESET_PIN
+#define BC28_OP_BAND              PKG_USING_BC28_MQTT_OP_BAND
 
 #define AT_CLIENT_DEV_NAME        PKG_USING_BC28_AT_CLIENT_DEV_NAME
 #define AT_CLIENT_BAUD_RATE       PKG_USING_BC28_MQTT_BAUD_RATE
@@ -42,7 +43,7 @@
 #define AT_QREGSWT_2              "AT+QREGSWT=2"
 #define AT_AUTOCONNECT_DISABLE    "AT+NCONFIG=AUTOCONNECT,FALSE"
 #define AT_REBOOT                 "AT+NRB"
-#define AT_NBAND_B8               "AT+NBAND=8"
+#define AT_NBAND                  "AT+NBAND=%d"
 #define AT_FUN_ON                 "AT+CFUN=1"
 #define AT_LED_ON                 "AT+QLEDMODE=1"
 #define AT_EDRX_OFF               "AT+CEDRXS=0,5"
@@ -245,6 +246,7 @@ int bc28_mqtt_publish(const char *topic, const char *msg)
 int at_client_attach(void)
 {
     int result = 0;
+    char cmd[AT_CMD_MAX_LEN] = {0};
 
     /* close echo */
     check_send_cmd(AT_ECHO_OFF, AT_OK, 0, AT_DEFAULT_TIMEOUT);
@@ -269,8 +271,9 @@ int at_client_attach(void)
     result = check_send_cmd(AT_QUERY_IMEI, AT_OK, 0, AT_DEFAULT_TIMEOUT);
     if (result != RT_EOK) return result;
 
-    /* 指定要搜索的频段 B8 */
-    result = check_send_cmd(AT_NBAND_B8, AT_OK, 0, AT_DEFAULT_TIMEOUT);
+    /* 指定要搜索的频段 */
+    rt_sprintf(cmd, AT_NBAND, BC28_OP_BAND);
+    result = check_send_cmd(cmd, AT_OK, 0, AT_DEFAULT_TIMEOUT);
     if (result != RT_EOK) return result;
 
     /* 打开模块的调试灯 */
