@@ -13,6 +13,7 @@ bc28_mqtt 是基于移远 BC28 模块 AT 固件的 MQTT 软件包，使用 UART 
 
 ### 1.1 特性
 
+- 接口简单易用
 - 支持掉线重连
 - 支持多实例
 - 线程安全
@@ -73,16 +74,17 @@ RT-Thread online packages --->
 
 目前有如下几个配置项：
 
-| 配置项                | 数据类型 | 说明                                |
-| --------------------- | -------- | ----------------------------------- |
-| AT client device name | string   | AT Client 串口设备名称，如 uart3    |
-| Select baud rate      | int      | 串口波特率，可选 4800、9600、115200 |
-| Reset pin             | int      | BC28 复位引脚号                     |
-| ADC pin               | int      | BC28 ADC 引脚号（暂时无效）         |
-| Product Key           | string   | 阿里云三元组信息                    |
-| Device Name           | string   | 阿里云三元组信息                    |
-| Device Secret         | string   | 阿里云三元组信息                    |
-| Keep-alive time       | int      | MQTT 保活时间                       |
+| 配置项                | 数据类型 | 说明                                       |
+| --------------------- | -------- | ------------------------------------------ |
+| AT client device name | string   | AT Client 串口设备名称，如 uart3           |
+| Select baud rate      | int      | 串口波特率，可选 4800、9600、115200        |
+| Select operating band | int      | BC28 模块工作频段，可选 1、3、5、8、20、28 |
+| Reset pin             | int      | BC28 复位引脚号                            |
+| ADC pin               | int      | BC28 ADC 引脚号（暂时无效）                |
+| Product Key           | string   | 阿里云三元组信息                           |
+| Device Name           | string   | 阿里云三元组信息                           |
+| Device Secret         | string   | 阿里云三元组信息                           |
+| Keep-alive time       | int      | MQTT 保活时间                              |
 
 
 
