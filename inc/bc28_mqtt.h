@@ -19,8 +19,6 @@ typedef enum {
 	AT_STAT_CONNECTED,
 } at_stat_t;
 
-at_stat_t at_stat;
-
 /* NB-IoT */
 int at_client_attach(void);
 int at_client_deattach(void);

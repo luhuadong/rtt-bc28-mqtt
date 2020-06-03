@@ -86,6 +86,8 @@
 #define AT_CLIENT_RECV_BUFF_LEN   256
 #define AT_DEFAULT_TIMEOUT        5000
 
+static at_stat_t at_stat;
+
 /**
  * This function will show response information.
  *
