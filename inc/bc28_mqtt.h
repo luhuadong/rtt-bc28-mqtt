@@ -6,18 +6,31 @@
  * Change Logs:
  * Date           Author       Notes
  * 2020-04-08     luhuadong    the first version
+ * 2020-06-04     luhuadong    v0.0.1
+ * 2020-07-25     luhuadong    support state transition
  */
 
 #ifndef __AT_BC28_H__
 #define __AT_BC28_H__
 
-typedef enum {
+#include <at.h>
 
-	AT_STAT_INIT = 0,
-	AT_STAT_ATTACH,
-	AT_STAT_DEATTACH,
-	AT_STAT_CONNECTED,
-} at_stat_t;
+typedef enum 
+{
+    AT_STAT_INIT = 0,
+    AT_STAT_ATTACH,
+    AT_STAT_DEATTACH,
+    AT_STAT_CONNECTED,
+    
+} bc28_state_t;
+
+struct bc28_device
+{
+    bc28_state_t      stat;
+    struct at_client *client;
+    rt_mutex_t        lock;
+};
+typedef struct bc28_device *bc28_device_t;
 
 /* NB-IoT */
 int at_client_attach(void);

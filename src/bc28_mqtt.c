@@ -6,6 +6,8 @@
  * Change Logs:
  * Date           Author       Notes
  * 2020-04-08     luhuadong    the first version
+ * 2020-06-04     luhuadong    v0.0.1
+ * 2020-07-25     luhuadong    support state transition
  */
 
 #include <stdlib.h>
@@ -86,7 +88,6 @@
 #define AT_CLIENT_RECV_BUFF_LEN   256
 #define AT_DEFAULT_TIMEOUT        5000
 
-static at_stat_t at_stat;
 
 /**
  * This function will show response information.
