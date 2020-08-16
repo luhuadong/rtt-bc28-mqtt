@@ -120,8 +120,8 @@ int  bc28_client_deattach(void);                              /* UE去附着 */
 
 ```c
 int  bc28_init(void);                                         /* 初始化BC28模块 */
-int  bc28_build_mqtt_network(void);                           /* 初始化BC28模块 */
-int  bc28_rebuild_mqtt_network(void);                         /* 初始化BC28模块 */
+int  bc28_build_mqtt_network(void);                           /* 建立MQTT通信网络 */
+int  bc28_rebuild_mqtt_network(void);                         /* 重新建立MQTT通信网络 */
 ```
 
 
