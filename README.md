@@ -62,11 +62,12 @@ RT-Thread online packages --->
 
 ### 3.1 版本说明
 
-| 版本   | 说明                                           |
-| ------ | ---------------------------------------------- |
-| latest | 目前支持 MQTT 连接阿里云物联网平台，将持续维护 |
+| 版本   | 说明                                                     |
+| ------ | -------------------------------------------------------- |
+| v0.0.1 | 基本实现 BC28 客户端初始化，建立 MQTT 通道               |
+| latest | 目前支持 MQTT 连接阿里云物联网平台，将持续维护、优化代码 |
 
-目前处于公测阶段，建议开发者使用 latest 版本。
+建议开发者使用 latest 版本。
 
 
 
@@ -93,14 +94,15 @@ RT-Thread online packages --->
 ### 4.1 MQTT 功能接口
 
 ```c
-int bc28_mqtt_auth(void);
-int bc28_mqtt_open(void);
-int bc28_mqtt_close(void);
-int bc28_mqtt_connect(void);
-int bc28_mqtt_disconnect(void);
-int bc28_mqtt_subscribe(const char *topic);
-int bc28_mqtt_unsubscribe(const char *topic);
-int bc28_mqtt_publish(const char *topic, const char *msg);
+int  bc28_mqtt_auth(void);                                    /* 配置阿里云设备信息 */
+int  bc28_mqtt_open(void);                                    /* 为MQTT客户端打开网络 */
+int  bc28_mqtt_close(void);                                   /* 关闭MQTT客户端网络 */
+int  bc28_mqtt_connect(void);                                 /* 连接客户端到MQTT服务器 */
+int  bc28_mqtt_disconnect(void);                              /* 断开客户端与MQTT服务器的连接 */
+int  bc28_mqtt_subscribe(const char *topic);                  /* 订阅topic主题 */
+int  bc28_mqtt_unsubscribe(const char *topic);                /* 取消订阅topic主题 */
+int  bc28_mqtt_publish(const char *topic, const char *msg);   /* 发布msg消息到topic主题 */
+void bc28_bind_parser(void (*callback)(const char *json));    /* 绑定JSON解析函数 */
 ```
 
 
@@ -108,8 +110,8 @@ int bc28_mqtt_publish(const char *topic, const char *msg);
 ### 4.2 网络附着和去附着
 
 ```c
-int at_client_attach(void);
-int at_client_deattach(void);
+int  bc28_client_attach(void);                                /* UE附着网络 */
+int  bc28_client_deattach(void);                              /* UE去附着 */
 ```
 
 
@@ -117,10 +119,14 @@ int at_client_deattach(void);
 ### 4.3 网络初始化接口
 
 ```c
-int bc28_init(void);
-int build_mqtt_network(void);
-int rebuild_mqtt_network(void);
+int  bc28_init(void);                                         /* 初始化BC28模块 */
+int  bc28_build_mqtt_network(void);                           /* 初始化BC28模块 */
+int  bc28_rebuild_mqtt_network(void);                         /* 初始化BC28模块 */
 ```
+
+
+
+bc28_mqtt 接口简单，代码请参考示例 example/bc28_mqtt_sample.c
 
 
 
