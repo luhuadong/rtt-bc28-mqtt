@@ -40,7 +40,15 @@ bc28_mqtt 软件包遵循 LGPL-2.1 许可，详见 `LICENSE` 文件。
 ### 1.4 依赖
 
 - RT-Thread 4.0+
-- AT 组件
+
+- AT 组件，需要开启 at client 功能
+
+    ```
+    RT-Thread Components  --->
+        Network  --->
+        [*] AT commands  --->
+        -*-   Enable AT commands client
+    ```
 
 
 
