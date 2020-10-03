@@ -113,6 +113,8 @@ int  bc28_mqtt_publish(const char *topic, const char *msg);   /* 发布msg消息
 void bc28_bind_parser(void (*callback)(const char *json));    /* 绑定JSON解析函数 */
 ```
 
+注意：使用 `bc28_mqtt_publish` 函数时需事先构建 msg 消息，默认采用定长消息方式发布，因此 msg 字符串末尾不需要添加 `\x1A` 字符（ CTRL + Z ）。
+
 
 
 ### 4.2 网络附着和去附着

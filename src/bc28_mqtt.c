@@ -74,7 +74,7 @@
 #define AT_MQTT_SUB                   "AT+QMTSUB=0,1,\"%s\",0"
 #define AT_MQTT_SUB_SUCC              "+QMTSUB: 0,1,0,1"
 #define AT_MQTT_UNSUB                 "AT+QMTUNS=0,1, \"%s\""
-#define AT_MQTT_PUB                   "AT+QMTPUB=0,0,0,0,\"%s\""
+#define AT_MQTT_PUB                   "AT+QMTPUB=0,0,0,0,\"%s\",%d"
 #define AT_MQTT_PUB_SUCC              "+QMTPUB: 0,0,0"
 
 #define AT_QMTSTAT_CLOSED             1
@@ -379,7 +379,7 @@ int bc28_mqtt_unsubscribe(const char *topic)
 int bc28_mqtt_publish(const char *topic, const char *msg)
 {
     char cmd[AT_CMD_MAX_LEN] = {0};
-    rt_sprintf(cmd, AT_MQTT_PUB, topic);
+    rt_sprintf(cmd, AT_MQTT_PUB, topic, strlen(msg));
 
     /* set AT client end sign to deal with '>' sign.*/
     at_set_end_sign('>');
