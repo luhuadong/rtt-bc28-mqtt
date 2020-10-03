@@ -307,7 +307,7 @@ int bc28_mqtt_connect(void)
     rt_sprintf(cmd, AT_MQTT_CONNECT, bc28.imei);
     LOG_D("%s", cmd);
 
-    if (check_send_cmd(AT_MQTT_CONNECT, AT_MQTT_CONNECT_SUCC, 4, 10000) < 0)
+    if (check_send_cmd(cmd, AT_MQTT_CONNECT_SUCC, 4, 10000) < 0)
     {
         LOG_D("MQTT connect failed.");
         return -RT_ERROR;
