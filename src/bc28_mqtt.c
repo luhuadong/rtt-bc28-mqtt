@@ -20,9 +20,9 @@
 #include <board.h>
 #include <at.h>
 
-#define LOG_TAG                       "pkg.bc28_mqtt"
-#define LOG_LVL                       LOG_LVL_DBG
-#include <ulog.h>
+#define DBG_TAG                       "pkg.bc28_mqtt"
+#define DBG_LVL                       DBG_LOG
+#include <rtdbg.h>
 
 #include "bc28_mqtt.h"
 
