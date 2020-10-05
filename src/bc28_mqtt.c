@@ -21,7 +21,11 @@
 #include <at.h>
 
 #define DBG_TAG                       "pkg.bc28_mqtt"
+#ifdef PKG_USING_BC28_MQTT_DEBUG
 #define DBG_LVL                       DBG_LOG
+#else
+#define DBG_LVL                       DBG_ERROR
+#endif
 #include <rtdbg.h>
 
 #include "bc28_mqtt.h"
@@ -162,7 +166,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
     {
         if (at_resp_parse_line_args_by_kw(resp, resp_expr, "%s", resp_arg) <= 0)
         {
-            LOG_E("# >_< Failed");
+            LOG_D("# >_< Failed");
             result = -RT_ERROR;
             goto __exit;
         }
