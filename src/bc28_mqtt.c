@@ -109,21 +109,21 @@ static char   buf[AT_CLIENT_RECV_BUFF_LEN];
  *
  * @return void
  */
-//static void show_resp_info(at_response_t resp)
-//{
-//    RT_ASSERT(resp);
-//    
-//    /* Print response line buffer */
-//    const char *line_buffer = RT_NULL;
-//
-//    for(rt_size_t line_num = 1; line_num <= resp->line_counts; line_num++)
-//    {
-//        if((line_buffer = at_resp_get_line(resp, line_num)) != RT_NULL)
-//            LOG_I("line %d buffer : %s", line_num, line_buffer);
-//        else
-//            LOG_I("Parse line buffer error!");
-//    }
-//}
+static void show_resp_info(at_response_t resp)
+{
+    RT_ASSERT(resp);
+    
+    /* Print response line buffer */
+    const char *line_buffer = RT_NULL;
+
+    for(rt_size_t line_num = 1; line_num <= resp->line_counts; line_num++)
+    {
+        if((line_buffer = at_resp_get_line(resp, line_num)) != RT_NULL)
+            LOG_I("line %d buffer : %s", line_num, line_buffer);
+        else
+            LOG_I("Parse line buffer error!");
+    }
+}
 
 /**
  * This function will send command and check the result.
@@ -160,7 +160,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
         goto __exit;
     }
 
-    //show_resp_info(resp);
+    show_resp_info(resp);
 
     if (resp_expr) 
     {
