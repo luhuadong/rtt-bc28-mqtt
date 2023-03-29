@@ -112,7 +112,7 @@ static char   buf[AT_CLIENT_RECV_BUFF_LEN];
 static void show_resp_info(at_response_t resp)
 {
     RT_ASSERT(resp);
-    
+
     /* Print response line buffer */
     const char *line_buffer = RT_NULL;
 
@@ -162,7 +162,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
 
     show_resp_info(resp);
 
-    if (resp_expr) 
+    if (resp_expr)
     {
         if (at_resp_parse_line_args_by_kw(resp, resp_expr, "%s", resp_arg) <= 0)
         {
@@ -398,6 +398,12 @@ int bc28_mqtt_publish(const char *topic, const char *msg)
     return check_send_cmd(msg, AT_MQTT_PUB_SUCC, 4, AT_DEFAULT_TIMEOUT);
 }
 
+/**
+ * Attach BC28 device to network.
+ *
+ * @return 0 : attach success
+ *        <0 : attach failed
+ */
 int bc28_client_attach(void)
 {
     int result = 0;
@@ -497,9 +503,20 @@ int bc28_client_attach(void)
     }
 }
 
+/**
+ * Deattach BC28 device from network.
+ *
+ * @return 0 : deattach success
+ *        <0 : deattach failed
+ */
 int bc28_client_deattach(void)
 {
-    check_send_cmd(AT_UE_DEATTACH, AT_OK, 0, AT_DEFAULT_TIMEOUT);
+    int result = 0;
+    result = check_send_cmd(AT_UE_DEATTACH, AT_OK, 0, AT_DEFAULT_TIMEOUT);
+    if (RT_EOK != result) {
+        return -RT_ERROR;
+    }
+
     bc28.stat = BC28_STAT_DEATTACH;
     return RT_EOK;
 }
