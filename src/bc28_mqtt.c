@@ -113,6 +113,7 @@ static void show_resp_info(at_response_t resp)
 {
     RT_ASSERT(resp);
 
+#ifdef PKG_USING_BC28_MQTT_DEBUG
     /* Print response line buffer */
     const char *line_buffer = RT_NULL;
 
@@ -123,6 +124,8 @@ static void show_resp_info(at_response_t resp)
         else
             LOG_I("Parse line buffer error!");
     }
+#endif
+    return;
 }
 
 /**
