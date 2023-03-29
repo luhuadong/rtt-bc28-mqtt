@@ -160,7 +160,7 @@ static int check_send_cmd(const char* cmd, const char* resp_expr,
         goto __exit;
     }
 
-    //show_resp_info(resp);
+    show_resp_info(resp);
 
     if (resp_expr) 
     {
@@ -501,6 +501,7 @@ int bc28_client_deattach(void)
 {
     check_send_cmd(AT_UE_DEATTACH, AT_OK, 0, AT_DEFAULT_TIMEOUT);
     bc28.stat = BC28_STAT_DEATTACH;
+    return RT_EOK;
 }
 
 /**
@@ -520,7 +521,11 @@ static int at_client_dev_init(void)
     config.baud_rate = AT_CLIENT_BAUD_RATE;
     config.data_bits = DATA_BITS_8;
     config.stop_bits = STOP_BITS_1;
+#ifdef RT_USING_SERIAL_V2
+    config.rx_bufsz     = AT_CLIENT_RECV_BUFF_LEN;
+#else
     config.bufsz     = AT_CLIENT_RECV_BUFF_LEN;
+#endif
     config.parity    = PARITY_NONE;
 
     rt_device_control(serial, RT_DEVICE_CTRL_CONFIG, &config);
