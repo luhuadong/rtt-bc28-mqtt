@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, RudyLo <luhuadong@163.com>
+ * Copyright (c) 2023, RudyLo <luhuadong@163.com>
  *
  * SPDX-License-Identifier: LGPL-2.1
  *

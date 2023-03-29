@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020, RudyLo <luhuadong@163.com>
+ * Copyright (c) 2023, RudyLo <luhuadong@163.com>
  *
  * SPDX-License-Identifier: LGPL-2.1
  *
@@ -9,6 +9,7 @@
  * 2020-06-04     luhuadong    v0.0.1
  * 2020-07-25     luhuadong    support state transition
  * 2020-08-16     luhuadong    support bind recv parser
+ * 2023-03-28     kurisaW      support serial v2
  */
 
 #include <stdio.h>
