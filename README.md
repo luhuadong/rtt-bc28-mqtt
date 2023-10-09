@@ -1,6 +1,5 @@
 # rtt-bc28-mqtt
-MQTT package based on Quectel BC28 AT model
-
+MQTT package based on Quectel BC28 AT module
 
 
 ## 1、介绍
